@@ -26,34 +26,27 @@ public class User extends Auditable {
     // Allows the server to auto generate the id (basically id++)
     private long userid;
 
-    @Column(nullable = false, unique = true)
-    // nullable = false // this means the value cant be null
-    // unique = true // means that the value cant be duplicated or in use elsewhere
+ @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    // we need to make it so the password doesnt get printed as json
+
     private String password;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("user")
-    private List<UserRoles> userRoles = new ArrayList<>();
-
-    // generated shit
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties("user")
+//    private List<UserRoles> userRoles = new ArrayList<>();
 
     public User() {
     }
 
-    // hand written
+
 
     public User(String username, String password, List<UserRoles> userRoles)
     {
-        // we want to use setters to set this
         setUsername(username);
         setPassword(password);
-
-        // loop & add user roles
 
         for (UserRoles ur : userRoles )
         {
@@ -80,8 +73,6 @@ public class User extends Auditable {
         this.username = username;
     }
 
-    // manually edited
-    // we encrypt it here.
     public String getPassword() {
         return password;
     }
@@ -96,7 +87,6 @@ public class User extends Auditable {
         this.password = password;
     }
 
-    // more generated code
 
     public List<UserRoles> getUserRoles() {
         return userRoles;
@@ -106,11 +96,32 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    // Another manual thing
-    // theres diff types of simplegrantedauth but this one works ery well for what we want to do
-    // what we want to do is make a list of the type simplegrantedauthority which is built into spring security
-    // this is the thing that allows our roles to truly work.
-    // this is what spring wants
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userid", nullable = false)
+    @JsonIgnoreProperties({"todos", "hibernateLazyInitializer"})
+    private User user;
+
+
+    @OneToMany(mappedBy = "user",
+            cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<Todos> todos = new ArrayList<>();
+
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+
+    public List<Todos> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todos> todos) {
+        this.todos = todos;
+    }
 
     public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();

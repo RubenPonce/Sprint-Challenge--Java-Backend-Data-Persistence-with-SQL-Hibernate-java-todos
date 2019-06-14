@@ -1,5 +1,5 @@
-package com.titrate.todos.repository;
 
+package com.titrate.todos.repository;
 import com.titrate.todos.model.User;
 import org.springframework.data.repository.CrudRepository;
 

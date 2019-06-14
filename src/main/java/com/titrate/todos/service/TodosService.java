@@ -2,23 +2,16 @@ package com.titrate.todos.service;
 
 import com.titrate.todos.model.Todos;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public interface TodosService
-{
-    ArrayList<Todos> findAll();
+public interface TodosService {
+    List<Todos> findAllById(long id);
 
     Todos findTodosById(long id);
 
-    Todos findTodosByName(String name);
+    Todos save(Todos todo);
 
     void delete(long id);
 
-    Todos save(Todos todo);
-
     Todos update(Todos todo, long id);
-
-    void deleteTodos(long todosid);
-
-    void saveTodos(long todosid);
 }

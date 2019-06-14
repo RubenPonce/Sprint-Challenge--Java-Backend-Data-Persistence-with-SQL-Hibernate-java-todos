@@ -1,22 +1,23 @@
 package com.titrate.todos.service;
 
 import com.titrate.todos.model.Todos;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.titrate.todos.repository.TodosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+@Service(value = "todoservice")
 public class TodosServiceImpl implements TodosService {
-    @Override
-    public ArrayList<Todos> findAll() {
-        private static final Logger logger = LoggerFactory.getLogger(ZooServiceImpl.class);
 
-        @Autowired
-        private TodosRepository todosepos;
-        ArrayList<Todos> list = new ArrayList<>();
-        todosrepo.findAll().iterator().forEachRemaining(list::add);
-        return list;
+    @Autowired
+    private TodosRepository killme;
+    @Override
+    public List<Todos> findAllById(long id) {
+        List<Todos> todolist = new ArrayList<>();
+        killme.getAllById(id).iterator().forEachRemaining(todolist::add);
+        return todolist;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class TodosServiceImpl implements TodosService {
     }
 
     @Override
-    public Todos findTodosByName(String name) {
+    public Todos save(Todos todo) {
         return null;
     }
 
@@ -35,23 +36,9 @@ public class TodosServiceImpl implements TodosService {
     }
 
     @Override
-    public Todos save(Todos todo) {
-        return null;
-    }
-
-    @Override
     public Todos update(Todos todo, long id) {
         return null;
     }
-
-    @Override
-    public void deleteTodos(long todosid) {
-
-    }
-
-    @Override
-    public void saveTodos(long todosid) {
-
-    }
 }
+
 

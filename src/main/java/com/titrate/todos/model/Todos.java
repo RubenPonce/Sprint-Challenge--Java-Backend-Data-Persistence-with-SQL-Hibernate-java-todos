@@ -2,7 +2,9 @@ package com.titrate.todos.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,24 +25,30 @@ public class Todos{
 //    @CreatedDate
 //    @Temporal(TIMESTAMP)
 
-    protected String datestarted;
+    private String datestarted;
 
 
     @Column(name = "completed", nullable = false)
     private boolean completed = false;
 
 
-    @OneToMany(mappedBy = "todo",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonIgnoreProperties("todo")
-    private List<User> users = new ArrayList<>();
+//    @OneToMany(mappedBy = "todo",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true)
+//    @JsonIgnoreProperties("todo")
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "userid", nullable = false)
+@JsonIgnoreProperties({"todos", "hibernateLazyInitializer"})
+private User user;
 
-    public Todos(String description, String datestarted, boolean completed, List<User> users) {
+
+
+
+    public Todos(String description, String datestarted, User user) {
         this.description = description;
         this.datestarted = datestarted;
         this.completed = completed;
-        this.users = users;
+        this.user = user;
     }
 
     public long getTodoid() {
@@ -64,8 +72,9 @@ public class Todos{
     }
 
     public void setDatestarted(String datestarted) {
-        this.datestarted = datestarted;
+        this.datestarted = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS").format(new Date(datestarted));
     }
+
 
     public boolean isCompleted() {
         return completed;
@@ -75,11 +84,11 @@ public class Todos{
         this.completed = completed;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
