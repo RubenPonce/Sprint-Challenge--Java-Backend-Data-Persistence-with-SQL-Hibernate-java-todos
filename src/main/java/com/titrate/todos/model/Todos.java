@@ -19,16 +19,17 @@ public class Todos{
     private String description;
 
     @Column(name = "datestarted", nullable = false)
+
 //    @CreatedDate
 //    @Temporal(TIMESTAMP)
-    //this tells spring to fill in the data for these collumn's
+
     protected String datestarted;
 
 
     @Column(name = "completed", nullable = false)
     private boolean completed = false;
 
-    //userid foreign key (one user to many todos) not null
+
     @OneToMany(mappedBy = "todo",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
