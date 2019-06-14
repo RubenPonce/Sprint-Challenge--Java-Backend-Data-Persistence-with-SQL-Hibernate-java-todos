@@ -33,10 +33,10 @@ public class User extends Auditable {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 
     private String password;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties("user")
-//    private List<UserRoles> userRoles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<UserRoles> userRoles = new ArrayList<>();
 
     public User() {
     }
@@ -107,13 +107,13 @@ public class User extends Auditable {
     @JsonIgnoreProperties("user")
     private List<Todos> todos = new ArrayList<>();
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public List<Todos> getTodos() {
         return todos;

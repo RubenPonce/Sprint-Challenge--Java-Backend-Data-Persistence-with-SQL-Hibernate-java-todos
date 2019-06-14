@@ -1,44 +1,59 @@
 package com.titrate.todos.service;
 
+
 import com.titrate.todos.model.Todos;
 import com.titrate.todos.repository.TodosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "todoservice")
-public class TodosServiceImpl implements TodosService {
-
+@Service(value="todoservice")
+public class TodosServiceImpl implements TodosService{
     @Autowired
     private TodosRepository killme;
     @Override
     public List<Todos> findAllById(long id) {
-        List<Todos> todolist = new ArrayList<>();
-        killme.getAllById(id).iterator().forEachRemaining(todolist::add);
-        return todolist;
+        List<Todos> todoList = new ArrayList<>();
+        killme.getAllById(id).iterator().forEachRemaining(todoList::add);
+        return todoList;
     }
 
     @Override
     public Todos findTodosById(long id) {
-        return null;
+        return killme.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public Todos save(Todos todo) {
-        return null;
+        return killme.save(todo);
     }
 
     @Override
     public void delete(long id) {
-
+            if (killme.findById(id).isPresent()){
+                killme.deleteById(id);
+            }else{
+                throw new EntityNotFoundException();
+            }
     }
-
     @Override
     public Todos update(Todos todo, long id) {
-        return null;
+        Todos currentTodo = killme.findById(id).orElseThrow(EntityNotFoundException::new);
+        if (todo.getDatestarted() != null){
+            currentTodo.setDatestarted(todo.getDatestarted());
+        }
+        if (todo.getDescription() != null){
+            currentTodo.setDescription(todo.getDescription());
+        }
+        if (todo.isCompleted()){
+            currentTodo.setCompleted(true);
+        }else{
+            currentTodo.setCompleted(false);
+        }
+        killme.save(currentTodo);
+        return currentTodo;
     }
 }
-
-
