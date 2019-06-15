@@ -26,7 +26,10 @@ public class TodosController {
 
         return new ResponseEntity<>(todosService.findAllById(currentUser.getUserid()), HttpStatus.OK);
     }
-
+    @PutMapping(value = "/todos/todosid/{todosid}", produces = {"application/json"}, consumes = {"application/json"})
+    public ResponseEntity<?> updateTodo(@PathVariable long todosid, @RequestBody Todos todos){
+        return new ResponseEntity<>(todosService.update(todos, todosid), HttpStatus.OK);
+    }
 
     @PostMapping(value = "/users/todos/{userid}", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity<?> postNewTodo(@PathVariable long userid, @RequestBody Todos todos){
@@ -34,10 +37,7 @@ public class TodosController {
         return new ResponseEntity<>(todosService.save(todos), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/todoss/todosid/{todosid}", produces = {"application/json"}, consumes = {"application/json"})
-    public ResponseEntity<?> updateTodo(@PathVariable long todosid, @RequestBody Todos todos){
-        return new ResponseEntity<>(todosService.update(todos, todosid), HttpStatus.OK);
-    }
+
 
 
 }

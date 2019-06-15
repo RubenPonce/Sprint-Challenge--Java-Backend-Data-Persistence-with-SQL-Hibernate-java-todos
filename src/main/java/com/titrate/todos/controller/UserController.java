@@ -18,13 +18,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+
 public class UserController
 {
 
@@ -39,7 +36,6 @@ public class UserController
         return new ResponseEntity<>(myUsers, HttpStatus.OK);
     }
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping(value = "/user/{userId}", produces = {"application/json"})
     public ResponseEntity<?> getUser(@PathVariable Long userId)
@@ -48,7 +44,6 @@ public class UserController
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
-
     @GetMapping(value = "/getusername", produces = {"application/json"})
     @ResponseBody
     public ResponseEntity<?> getCurrentUserName(Authentication authentication)
@@ -56,14 +51,11 @@ public class UserController
         return new ResponseEntity<>(authentication.getPrincipal(), HttpStatus.OK);
     }
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping(value = "/user", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<?> addNewUser(@Valid @RequestBody User newuser) throws URISyntaxException
     {
         newuser =  userService.save(newuser);
-
-        // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
         URI newUserURI = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -75,14 +67,12 @@ public class UserController
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
-
     @PutMapping(value = "/user/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User updateUser, @PathVariable long id)
     {
         userService.update(updateUser, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/user/{id}")
@@ -92,5 +82,6 @@ public class UserController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
+
 
 
