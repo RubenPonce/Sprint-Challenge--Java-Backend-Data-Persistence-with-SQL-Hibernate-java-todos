@@ -23,7 +23,7 @@ public class Todos extends Auditable {
 
     @ManyToOne
     @JoinColumn(name = "todos")
-    @JsonIgnoreProperties("todos")
+    @JsonIgnoreProperties({"todos"})
     private User user;
 
     public Todos() {

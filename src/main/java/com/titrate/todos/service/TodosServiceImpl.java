@@ -16,7 +16,10 @@ public class TodosServiceImpl implements TodosService{
     private TodosRepository killme;
     @Override
     public List<Todos> findAllById(long id) {
+        System.out.println(id);
+
         List<Todos> todoList = new ArrayList<>();
+        System.out.println(killme);
         killme.getAllById(id).iterator().forEachRemaining(todoList::add);
         return todoList;
     }
