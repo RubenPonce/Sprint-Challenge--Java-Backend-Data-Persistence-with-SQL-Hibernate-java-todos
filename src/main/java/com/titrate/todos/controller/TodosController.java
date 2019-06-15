@@ -24,7 +24,7 @@ public class TodosController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userService.findUserByUsername(((org.springframework.security.core.userdetails.User)authentication.getPrincipal()).getUsername());
 
-        return new ResponseEntity<>(todosService.findAllById(7), HttpStatus.OK);
+        return new ResponseEntity<>(todosService.findAllById(currentUser.getUserid()), HttpStatus.OK);
     }
 
 

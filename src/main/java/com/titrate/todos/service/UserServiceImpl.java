@@ -30,8 +30,9 @@ public class UserServiceImpl implements UserDetailsService, UserService
 
     @Override
     public User findUserByUsername(String username) {
-        return null;
+        return userrepos.findByUsername(username);
     }
+
 
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
