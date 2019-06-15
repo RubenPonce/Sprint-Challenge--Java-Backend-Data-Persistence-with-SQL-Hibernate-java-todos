@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "roleService")
+@Service(value = "roleservice")
 public class RoleServiceImpl implements RoleService
 {
     @Autowired

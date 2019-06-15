@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 @Transactional
 @Component
-public class SeedData implements CommandLineRunner
+public class seedData implements CommandLineRunner
 {
     RoleRepository rolerepos;
     UserRepository userrepos;
     TodosRepository todorepos;
 
-    public SeedData(RoleRepository rolerepos, UserRepository userrepos, TodosRepository todorepos)
+    public seedData(RoleRepository rolerepos, UserRepository userrepos, TodosRepository todorepos)
     {
         this.rolerepos = rolerepos;
         this.userrepos = userrepos;
