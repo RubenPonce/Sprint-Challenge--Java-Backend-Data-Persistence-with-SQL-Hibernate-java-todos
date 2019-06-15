@@ -8,54 +8,53 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="todos")
-public class Todos{
-
-
+@Table(name = "todos")
+public class Todos extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long todoid;
 
-
-    @Column(name = "description", nullable = false, unique = true )
+    @Column(nullable = false)
     private String description;
-
-    @Column(name = "datestarted", nullable = false)
-
-//    @CreatedDate
-//    @Temporal(TIMESTAMP)
 
     private String datestarted;
 
+    private boolean completed;
 
-    @Column(name = "completed", nullable = false)
-    private boolean completed = false;
+    @ManyToOne
+    @JoinColumn(name = "todos")
+    @JsonIgnoreProperties("todos")
+    private User user;
 
+    public Todos() {
+    }
 
-//    @OneToMany(mappedBy = "todo",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true)
-//    @JsonIgnoreProperties("todo")
-@ManyToOne(fetch = FetchType.LAZY)
-@JoinColumn(name = "userid", nullable = false)
-@JsonIgnoreProperties({"todos", "hibernateLazyInitializer"})
-private User user;
-
-
+    public Todos(String description, String datestarted, boolean completed) {
+        this.description = description;
+        this.datestarted = datestarted;
+        this.completed = completed;
+    }
 
 
     public Todos(String description, String datestarted, User user) {
+        this.description = description;
+        this.datestarted = datestarted;
+        this.user = user;
+        this.completed = false;
+    }
+
+    public Todos(String description, String datestarted, boolean completed, User user) {
         this.description = description;
         this.datestarted = datestarted;
         this.completed = completed;
         this.user = user;
     }
 
-    public long getTodoid() {
+    public long getTodosid() {
         return todoid;
     }
 
-    public void setTodoid(long todoid) {
+    public void setTodosid(long todoid) {
         this.todoid = todoid;
     }
 
@@ -72,9 +71,8 @@ private User user;
     }
 
     public void setDatestarted(String datestarted) {
-        this.datestarted = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS").format(new Date(datestarted));
+        this.datestarted = datestarted;
     }
-
 
     public boolean isCompleted() {
         return completed;

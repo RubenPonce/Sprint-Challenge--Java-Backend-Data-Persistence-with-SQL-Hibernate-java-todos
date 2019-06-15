@@ -14,48 +14,50 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
-// this gets called users here and users in the database
 public class User extends Auditable {
-
-    // the user class has a user id
-    // user name
-    // password (encrypted) with bcrypto
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    // Allows the server to auto generate the id (basically id++)
     private long userid;
 
- @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("user")
     private List<UserRoles> userRoles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    private List<Todos> todos = new ArrayList<>();
+
     public User() {
     }
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
-
-    public User(String username, String password, List<UserRoles> userRoles)
-    {
+    public User(String username, String password, List<UserRoles> userRoles){
         setUsername(username);
         setPassword(password);
-
-        for (UserRoles ur : userRoles )
-        {
-            ur.setUser(this);
+        for(UserRoles roles: userRoles){
+            roles.setUser(this);
         }
         this.userRoles = userRoles;
     }
 
-    // generated
+    public List<Todos> getTodos() {
+        return todos;
+    }
+
+    public void setTodos(List<Todos> todos) {
+        this.todos = todos;
+    }
 
     public long getUserid() {
         return userid;
@@ -82,11 +84,9 @@ public class User extends Auditable {
         this.password = passwordEncoder.encode(password);
     }
 
-    public void setPasswordNoEncrypt(String password)
-    {
+    public void setPasswordNoEncrypt(String password){
         this.password = password;
     }
-
 
     public List<UserRoles> getUserRoles() {
         return userRoles;
@@ -96,40 +96,14 @@ public class User extends Auditable {
         this.userRoles = userRoles;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid", nullable = false)
-    @JsonIgnoreProperties({"todos", "hibernateLazyInitializer"})
-    private User user;
-
-
-    @OneToMany(mappedBy = "user",
-            cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("user")
-    private List<Todos> todos = new ArrayList<>();
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Todos> getTodos() {
-        return todos;
-    }
-
-    public void setTodos(List<Todos> todos) {
-        this.todos = todos;
-    }
-
     public List<SimpleGrantedAuthority> getAuthority(){
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
-        for (UserRoles r : this.userRoles)
-        {
-            String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
+
+        for(UserRoles role: this.userRoles){
+            String myRole = "ROLE_" + role.getRole().getName().toUpperCase();
             rtnList.add(new SimpleGrantedAuthority(myRole));
         }
+
         return rtnList;
     }
 }
