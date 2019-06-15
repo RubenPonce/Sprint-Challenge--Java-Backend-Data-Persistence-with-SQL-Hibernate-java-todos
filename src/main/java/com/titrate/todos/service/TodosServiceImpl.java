@@ -26,6 +26,7 @@ public class TodosServiceImpl implements TodosService{
 
     @Override
     public Todos findTodosById(long id) {
+        System.out.println(killme.findById(id));
         return killme.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 

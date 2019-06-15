@@ -12,9 +12,11 @@ public interface TodosRepository extends CrudRepository<Todos, Long> {
 
     @Query(value = "select * from todos where todos = :userid", nativeQuery = true )
     List<Todos> getAllById(long userid);
+
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM todos WHERE todos = :userid", nativeQuery = true)
     void deleteAllByUserId(long userid);
+
 }
 
